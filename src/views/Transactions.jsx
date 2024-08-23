@@ -1,27 +1,45 @@
 import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
+import ModalForm from "../components/ModalFormEdit";
+import { IconButton } from "@mui/material";
+import { MdOutlineEdit } from "react-icons/md";
 
 export default function Transactions() {
   const [transactions, setTransactions] = useState([]);
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [error, setError] = useState(null);
+  const [open, setOpen] = useState(false);
 
   // useEffect para hacer la solicitud HTTP cuando el componente se monte
-  useEffect(() => {
-    const fetchTransactions = async () => {
-      try {
-        const response = await fetch("http://localhost:4343/transactions");
-        if (!response.ok) {
-          throw new Error(`Error: ${response.statusText}`);
-        }
-        const data = await response.json();
-        setTransactions(data);
-      } catch (err) {
-        setError(err.message);
+  const fetchTransactions = async () => {
+    try {
+      const response = await fetch("http://localhost:4343/transactions");
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
       }
-    };
+      const data = await response.json();
+      setTransactions(data);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
+  useEffect(() => {
     fetchTransactions();
   }, []);
+
+  const handleEditClick = (transaction) => {
+    setSelectedTransaction(transaction);
+    setOpen(true);
+  };
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const refreshTransactions = () => {
+    fetchTransactions();
+  };
+
   console.log(error);
 
   return (
@@ -79,18 +97,37 @@ export default function Transactions() {
                   <td className="px-6 py-4">{transaction.description}</td>
                   <td className="px-6 py-4">{transaction.category.name}</td>
                   <td className="px-6 py-4 text-right">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                    <IconButton
+                      aria-label="update"
+                      onClick={() => handleEditClick(transaction)}
                     >
-                      Edit
-                    </a>
+                      <MdOutlineEdit />
+                    </IconButton>
+                    <IconButton
+                      aria-label="update"
+                      onClick={() => handleEditClick(transaction)}
+                    >
+                      <MdOutlineEdit />
+                    </IconButton>
+                    <IconButton
+                      aria-label="update"
+                      onClick={() => handleEditClick(transaction)}
+                    >
+                      <MdOutlineEdit />
+                    </IconButton>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+        <ModalForm
+          transaction={selectedTransaction}
+          handleOpen={handleOpen}
+          handleClose={handleClose}
+          openModal={open}
+          onUpdate={refreshTransactions}
+        />
       </main>
     </>
   );

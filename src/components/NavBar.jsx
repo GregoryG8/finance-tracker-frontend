@@ -8,7 +8,7 @@ export default function NavBar() {
     setIsMenuOpen(!isMenuOpen); // Cambia el estado a su opuesto
   };
   return (
-    <header className="fixed bg-background text-text w-full shadow-sm p-4">
+    <header className="fixed bg-background text-text w-full shadow-sm p-4 z-50">
       <div className="container mx-auto flex justify-around items-center">
         <h1 className="text-text text-2xl font-bold">Finance Tracker</h1>
 
