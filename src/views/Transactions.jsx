@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
-import ModalForm from "../components/ModalFormEdit";
+import ModalFormEdit from "../components/ModalFormEdit";
 import { IconButton } from "@mui/material";
-import { MdOutlineEdit } from "react-icons/md";
+import { MdOutlineEdit, MdOutlineAddCircleOutline } from "react-icons/md";
+import ModalFormCreate from "../components/ModalFromCreate";
 
 export default function Transactions() {
   const [transactions, setTransactions] = useState([]);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [error, setError] = useState(null);
-  const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openCreate, setOpenCreate] = useState(false);
 
   // useEffect para hacer la solicitud HTTP cuando el componente se monte
   const fetchTransactions = async () => {
@@ -30,11 +32,17 @@ export default function Transactions() {
 
   const handleEditClick = (transaction) => {
     setSelectedTransaction(transaction);
-    setOpen(true);
+    setOpenEdit(true);
   };
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleCreateClick = () => {
+    setOpenCreate(true);
+  };
+
+  const handleOpenEdit = () => setOpenEdit(true);
+  const handleCloseEdit = () => setOpenEdit(false);
+  const handleOpenCreate = () => setOpenCreate(true);
+  const handleCloseCreate = () => setOpenCreate(false);
 
   const refreshTransactions = () => {
     fetchTransactions();
@@ -56,6 +64,12 @@ export default function Transactions() {
                 financial activities, allowing you to track your spending,
                 categorize transactions, and maintain control over your budget.
               </p>
+              <IconButton
+                aria-label="create"
+                onClick={() => handleCreateClick()}
+              >
+                <MdOutlineAddCircleOutline />
+              </IconButton>
             </caption>
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
@@ -109,23 +123,23 @@ export default function Transactions() {
                     >
                       <MdOutlineEdit />
                     </IconButton>
-                    <IconButton
-                      aria-label="update"
-                      onClick={() => handleEditClick(transaction)}
-                    >
-                      <MdOutlineEdit />
-                    </IconButton>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <ModalForm
+        <ModalFormEdit
           transaction={selectedTransaction}
-          handleOpen={handleOpen}
-          handleClose={handleClose}
-          openModal={open}
+          handleOpen={handleOpenEdit}
+          handleClose={handleCloseEdit}
+          openModal={openEdit}
+          onUpdate={refreshTransactions}
+        />
+        <ModalFormCreate
+          handleOpen={handleOpenCreate}
+          handleClose={handleCloseCreate}
+          openModal={openCreate}
           onUpdate={refreshTransactions}
         />
       </main>

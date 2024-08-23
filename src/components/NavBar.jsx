@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen); // Cambia el estado a su opuesto
+    setIsMenuOpen(!isMenuOpen);
   };
   return (
     <header className="fixed bg-background text-text w-full shadow-sm p-4 z-50">

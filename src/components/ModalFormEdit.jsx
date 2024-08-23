@@ -18,7 +18,7 @@ const modalStyle = {
   p: 4,
 };
 
-export default function ModalForm({
+export default function ModalFormEdit({
   transaction,
   handleClose,
   handleOpen,
@@ -36,7 +36,7 @@ export default function ModalForm({
   });
   const [error, setError] = useState(null);
 
-  ModalForm.propTypes = {
+  ModalFormEdit.propTypes = {
     transaction: PropTypes.shape({
       id: PropTypes.number,
       type: PropTypes.string,
