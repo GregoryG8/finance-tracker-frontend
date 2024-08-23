@@ -23,7 +23,7 @@ export default function NavBar() {
                 Home <span></span>
               </li>
             </Link>
-            <Link to="/">
+            <Link to="/transactions">
               <li className="font-semibold">Transactions</li>
             </Link>
             {/* <Link to="/">
