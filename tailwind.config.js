@@ -8,11 +8,21 @@ export default {
       background: "#f8f9fa",
       text: "#212529",
       accent: '#ffc107',
+      dark: '#000000',
     },
     fontFamily: {
       sans: ['Inter', 'system-ui', 'Avenir', 'Helvetica', 'Arial', 'sans-serif'],
     },
-    extend: {},
+    extend: {
+      screens: {
+        'ssm': '340px',
+        'sm': '400px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+        '2xl': '1536px',
+      },
+    },
   },
   plugins: [],
 };
