@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import ModalFormEdit from "../components/ModalFormEdit";
 import { IconButton } from "@mui/material";
-import { MdOutlineEdit, MdOutlineAddCircleOutline } from "react-icons/md";
+import { MdOutlineEdit, MdOutlineAddCircleOutline, MdOutlineDeleteOutline } from "react-icons/md";
 import ModalFormCreate from "../components/ModalFromCreate";
 
 export default function Transactions() {
@@ -33,6 +33,23 @@ export default function Transactions() {
   const handleEditClick = (transaction) => {
     setSelectedTransaction(transaction);
     setOpenEdit(true);
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this transaction?")) {
+      try {
+        const response = await fetch(`http://localhost:4343/transactions/${id}`, {
+          method: "DELETE",
+        });
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+        // Refresca la lista de transacciones después de la eliminación
+        refreshTransactions();
+      } catch (err) {
+        setError(err.message);
+      }
+    }
   };
 
   const handleCreateClick = () => {
@@ -118,10 +135,10 @@ export default function Transactions() {
                       <MdOutlineEdit />
                     </IconButton>
                     <IconButton
-                      aria-label="update"
-                      onClick={() => handleEditClick(transaction)}
+                      aria-label="delete"
+                      onClick={() => handleDelete(transaction.id)}
                     >
-                      <MdOutlineEdit />
+                      <MdOutlineDeleteOutline />
                     </IconButton>
                   </td>
                 </tr>
