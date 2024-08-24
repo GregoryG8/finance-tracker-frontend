@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import ModalFormEdit from "../components/ModalFormEdit";
 import { IconButton } from "@mui/material";
-import { MdOutlineEdit, MdOutlineAddCircleOutline, MdOutlineDeleteOutline } from "react-icons/md";
+import {
+  MdOutlineEdit,
+  MdOutlineAddCircleOutline,
+  MdOutlineDeleteOutline,
+} from "react-icons/md";
 import ModalFormCreate from "../components/ModalFromCreate";
 
 export default function Transactions() {
@@ -12,7 +16,7 @@ export default function Transactions() {
   const [openEdit, setOpenEdit] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
 
-  // useEffect para hacer la solicitud HTTP cuando el componente se monte
+  // Fetch transactions from the API when the component mounts
   const fetchTransactions = async () => {
     try {
       const response = await fetch("http://localhost:4343/transactions");
@@ -30,21 +34,26 @@ export default function Transactions() {
     fetchTransactions();
   }, []);
 
+  // Handle click event for editing a transaction
   const handleEditClick = (transaction) => {
     setSelectedTransaction(transaction);
     setOpenEdit(true);
   };
 
+  // Handle delete action for a transaction
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this transaction?")) {
       try {
-        const response = await fetch(`http://localhost:4343/transactions/${id}`, {
-          method: "DELETE",
-        });
+        const response = await fetch(
+          `http://localhost:4343/transactions/${id}`,
+          {
+            method: "DELETE",
+          }
+        );
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`);
         }
-        // Refresca la lista de transacciones después de la eliminación
+        // Refresh the transactions list after deletion
         refreshTransactions();
       } catch (err) {
         setError(err.message);
@@ -52,15 +61,18 @@ export default function Transactions() {
     }
   };
 
+  // Handle click event for creating a new transaction
   const handleCreateClick = () => {
     setOpenCreate(true);
   };
 
+  // Handlers for opening and closing modals
   const handleOpenEdit = () => setOpenEdit(true);
   const handleCloseEdit = () => setOpenEdit(false);
   const handleOpenCreate = () => setOpenCreate(true);
   const handleCloseCreate = () => setOpenCreate(false);
 
+  // Refresh transactions list
   const refreshTransactions = () => {
     fetchTransactions();
   };

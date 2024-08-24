@@ -6,12 +6,17 @@ import Transactions from "./views/Transactions";
 function App() {
   return (
     <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Home/>}/>
-      <Route path="/transactions" element={<Transactions/>}/>
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
-  </BrowserRouter>
+      <Routes>
+        {/* Define the route for the homepage */}
+        <Route path="/" element={<Home />} />
+
+        {/* Define the route for the transactions page */}
+        <Route path="/transactions" element={<Transactions />} />
+
+        {/* Redirect any unknown route to the homepage */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

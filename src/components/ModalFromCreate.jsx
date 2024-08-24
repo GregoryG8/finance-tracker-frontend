@@ -5,6 +5,7 @@ import Modal from "@mui/material/Modal";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 
+// Style for the modal component
 const modalStyle = {
   position: "absolute",
   top: "50%",
@@ -19,11 +20,11 @@ const modalStyle = {
 };
 
 export default function ModalFormCreate({
-  handleClose,
-  openModal,
-  onUpdate,
+  handleClose, // Function to close the modal
+  openModal, // Boolean to open/close the modal
+  onUpdate, // Function to refresh the data after submission
 }) {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([]); // State to store category options
   const [formData, setFormData] = useState({
     id: "",
     type: "",
@@ -31,15 +32,17 @@ export default function ModalFormCreate({
     category: "",
     date: "",
     description: "",
-  });
-  const [error, setError] = useState(null);
+  }); // State to store form data
+  const [error, setError] = useState(null); // State to store any errors
 
+  // Define prop types for the component
   ModalFormCreate.propTypes = {
     handleClose: PropTypes.func.isRequired,
     openModal: PropTypes.bool.isRequired,
     onUpdate: PropTypes.func,
   };
 
+  // Fetch categories when the component is mounted
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -57,14 +60,17 @@ export default function ModalFormCreate({
     fetchCategories();
   }, []);
 
+  // Handle changes to form inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Prepare data for submission
     const updatedData = {
       ...formData,
       amount: parseFloat(formData.amount),
@@ -74,25 +80,21 @@ export default function ModalFormCreate({
       },
     };
 
-
     try {
-      const response = await fetch(
-        `http://localhost:4343/transactions`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedData),
-        }
-      );
+      const response = await fetch(`http://localhost:4343/transactions`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedData),
+      });
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
-      handleClose();
-      if (onUpdate) onUpdate();
+      handleClose(); // Close the modal
+      if (onUpdate) onUpdate(); // Refresh data if the update function is provided
     } catch (err) {
-      setError(err.message);
+      setError(err.message); // Handle errors
     }
   };
 

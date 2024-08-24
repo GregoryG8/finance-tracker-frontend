@@ -5,6 +5,7 @@ import Modal from "@mui/material/Modal";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 
+// Style for the modal
 const modalStyle = {
   position: "absolute",
   top: "50%",
@@ -19,13 +20,13 @@ const modalStyle = {
 };
 
 export default function ModalFormEdit({
-  transaction,
-  handleClose,
-  handleOpen,
-  openModal,
-  onUpdate,
+  transaction, // The transaction to edit
+  handleClose, // Function to close the modal
+  handleOpen, // Function to open the modal (not used in the code)
+  openModal, // Boolean to control if the modal is open or closed
+  onUpdate, // Function to call after the update
 }) {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([]); // Categories for the dropdown
   const [formData, setFormData] = useState({
     id: "",
     type: "",
@@ -36,6 +37,7 @@ export default function ModalFormEdit({
   });
   const [error, setError] = useState(null);
 
+  // PropTypes for type checking
   ModalFormEdit.propTypes = {
     transaction: PropTypes.shape({
       id: PropTypes.number,
@@ -54,6 +56,7 @@ export default function ModalFormEdit({
     onUpdate: PropTypes.func,
   };
 
+  // Effect to set form data when transaction changes
   useEffect(() => {
     if (transaction) {
       setFormData({
@@ -68,6 +71,7 @@ export default function ModalFormEdit({
     }
   }, [transaction, handleOpen]);
 
+  // Effect to fetch categories from API
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -85,25 +89,25 @@ export default function ModalFormEdit({
     fetchCategories();
   }, []);
 
+  // Handle form field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Asegúrate de que amount sea un número
+    // Prepare updated data
     const updatedData = {
       ...formData,
-      amount: parseFloat(formData.amount), // Convertir a número
+      amount: parseFloat(formData.amount),
       category: {
         id: categories.find((cat) => cat.name === formData.category).id,
         name: formData.category,
       },
     };
-
-    console.log("Amount as a number:", updatedData.amount); // Verifica el valor aquí
 
     try {
       const response = await fetch(

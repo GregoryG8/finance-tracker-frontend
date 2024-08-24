@@ -1,12 +1,13 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
 
 export default function Home() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const handleClick = () => {
-        navigate('/transactions', { replace: true });
-      };
+  // Handle button click to navigate to the transactions page
+  const handleClick = () => {
+    navigate("/transactions", { replace: true });
+  };
   return (
     <>
       <NavBar />
@@ -21,7 +22,10 @@ export default function Home() {
             solution for managing and monitoring your financial activities.
           </p>
           <div className="flex justify-end mt-10 ">
-            <button onClick={handleClick} className="bg-primary w-36 h-12 rounded-xl text-background hover:bg-secondary hover:text-background">
+            <button
+              onClick={handleClick}
+              className="bg-primary w-36 h-12 rounded-xl text-background hover:bg-secondary hover:text-background"
+            >
               Transactions List
             </button>
           </div>

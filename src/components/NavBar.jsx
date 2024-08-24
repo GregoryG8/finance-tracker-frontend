@@ -4,9 +4,12 @@ import { Link } from "react-router-dom";
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Toggle the menu open/close state
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
   return (
     <header className="fixed bg-background text-text w-full shadow-sm p-4 z-50">
       <div className="container mx-auto flex justify-around items-center">
@@ -18,11 +21,13 @@ export default function NavBar() {
               isMenuOpen ? "hidden" : "block"
             }`}
           >
+            {/* Link to the home page */}
             <Link to="/">
               <li className="font-semibold">
                 Home <span></span>
               </li>
             </Link>
+            {/* Link to the transactions page */}
             <Link to="/transactions">
               <li className="font-semibold">Transactions</li>
             </Link>
@@ -33,6 +38,7 @@ export default function NavBar() {
               <li>Settings</li>
             </Link> */}
           </ul>
+          {/* Hamburger menu icon for small screens */}
           <RxHamburgerMenu
             className=" cursor-pointer md:hidden"
             onClick={toggleMenu}
